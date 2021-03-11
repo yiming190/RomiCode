@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.sensors.RomiGyro;
+import edu.wpi.first.wpilibj.controller.*;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   /** Creates a new DriveTrainSubsytem. */
   private final Spark leftMotor, rightMotor;
   private final Encoder leftEncoder, rightEncoder;
   private final RomiGyro gyro;
+  private final PIDController pid;
   
   public DriveTrainSubsystem() {
     leftMotor = new Spark(Constants.DrivetrainConstants.LEFT_MOTOR_PORT);
@@ -25,6 +27,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightEncoder.setDistancePerPulse(Constants.DrivetrainConstants.INCHES_PER_PULSE);
     rightMotor.setInverted(true);
     gyro = new RomiGyro();
+    pid = new PIDController(0.0001, 0, 0);
   }
 
   public void drive(double leftSpeed, double rightSpeed){
@@ -32,6 +35,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightMotor.set(rightSpeed);
   }
 
+  public void drivePID(){
+    leftMotor.set(pid.calculate(leftEncoder.getDistance(), 12));
+    rightMotor.set(pid.calculate(rightEncoder.getDistance(), 12));
+  }
   public void driveStraight(){
       drive(0.5, 0.5);   
   }
