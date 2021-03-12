@@ -27,7 +27,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightEncoder.setDistancePerPulse(Constants.DrivetrainConstants.INCHES_PER_PULSE);
     rightMotor.setInverted(true);
     gyro = new RomiGyro();
-    pid = new PIDController(0.0001, 0, 0);
+    pid = new PIDController(0.15, 0, 0);
   }
 
   public void drive(double leftSpeed, double rightSpeed){
@@ -35,9 +35,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightMotor.set(rightSpeed);
   }
 
-  public void drivePID(){
-    leftMotor.set(pid.calculate(leftEncoder.getDistance(), 12));
-    rightMotor.set(pid.calculate(rightEncoder.getDistance(), 12));
+  public void drivePID(double setpoint){
+    leftMotor.set(pid.calculate(leftEncoder.getDistance(), setpoint));
+    rightMotor.set(pid.calculate(rightEncoder.getDistance(), setpoint));
   }
   public void driveStraight(){
       drive(0.5, 0.5);   
