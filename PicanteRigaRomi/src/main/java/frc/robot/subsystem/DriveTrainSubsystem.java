@@ -4,6 +4,8 @@
 
 package frc.robot.subsystem;
 
+//import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.DoubleArraySerializer;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -46,6 +48,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void turn(boolean isRight){
     double coefficient = isRight ? -1 : 1;
     drive(-coefficient*0.5, coefficient*0.5);
+  }
+
+  public double getOffset(){
+    return pid.getPositionError();
   }
 
   public void resetGyro(){

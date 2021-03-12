@@ -10,9 +10,11 @@ import frc.robot.subsystem.DriveTrainSubsystem;
 
 public class DriveStraight extends CommandBase {
   DriveTrainSubsystem ds;
+  double sp;
   /** Creates a new DriveStraight. */
-  public DriveStraight(RobotContainer robotContainer) {
+  public DriveStraight(RobotContainer robotContainer, double setpoint) {
     ds = robotContainer.driveTrainSubsystem;
+    sp = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(robotContainer.driveTrainSubsystem);
   }
@@ -26,7 +28,7 @@ public class DriveStraight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ds.drivePID(12);
+    ds.drivePID(sp);
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +40,6 @@ public class DriveStraight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ds.getLeftDistance() >=12 && ds.getRightDistance()>=12;
+    return ds.getOffset() == 0;
   }
 }
