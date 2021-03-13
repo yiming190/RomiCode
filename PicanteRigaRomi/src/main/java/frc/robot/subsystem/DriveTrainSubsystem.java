@@ -31,7 +31,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightMotor.setInverted(true);
     gyro = new RomiGyro();
     pid = new PIDController(0.15, 0, 0);
-    pid = new PIDController(0.001, 0, 0);
+    pid2 = new PIDController(0.001, 0, 0);
   }
 
   public void drive(double leftSpeed, double rightSpeed){
