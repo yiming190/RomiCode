@@ -40,6 +40,6 @@ public class DriveStraight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ds.getOffset() == 0;
+    return ds.atsetPoint();
   }
 }
