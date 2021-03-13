@@ -19,6 +19,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final Encoder leftEncoder, rightEncoder;
   private final RomiGyro gyro;
   private final PIDController pid;
+  private final PIDController pid2;
   
   public DriveTrainSubsystem() {
     leftMotor = new Spark(Constants.DrivetrainConstants.LEFT_MOTOR_PORT);
@@ -30,6 +31,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightMotor.setInverted(true);
     gyro = new RomiGyro();
     pid = new PIDController(0.15, 0, 0);
+    pid = new PIDController(0.001, 0, 0);
   }
 
   public void drive(double leftSpeed, double rightSpeed){
@@ -46,10 +48,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
       drive(0.5, 0.5);   
   }
 
-  public void turnPID(double setpoint, boolean isRight){
-    double coefficient = isRight ? -1 : 1;
-    leftMotor.set(-coefficient*pid.calculate(gyro.getAngleZ(), setpoint));
-    rightMotor.set(coefficient*pid.calculate(gyro.getAngleZ(), setpoint));
+  public void turnPID(double setpoint){
+    leftMotor.set(pid2.calculate(gyro.getAngleZ(), setpoint));
+    rightMotor.set(-pid2.calculate(gyro.getAngleZ(), setpoint));
   }
 
   public void turn(boolean isRight){
