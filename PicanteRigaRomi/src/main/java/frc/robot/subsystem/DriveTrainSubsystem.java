@@ -41,8 +41,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftMotor.set(pid.calculate(leftEncoder.getDistance(), setpoint));
     rightMotor.set(pid.calculate(rightEncoder.getDistance(), setpoint));
   }
+
   public void driveStraight(){
       drive(0.5, 0.5);   
+  }
+
+  public void turnPID(double setpoint, boolean isRight){
+    double coefficient = isRight ? -1 : 1;
+    leftMotor.set(-coefficient*pid.calculate(gyro.getAngle(), setpoint));
+    rightMotor.set(coefficient*pid.calculate(gyro.getAngle(), setpoint));
   }
 
   public void turn(boolean isRight){
@@ -53,7 +60,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public double getOffset(){
     return pid.getPositionError();
   }
-
+  
   public void resetGyro(){
     gyro.reset();
   }

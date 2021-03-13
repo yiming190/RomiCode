@@ -10,9 +10,11 @@ import frc.robot.subsystem.DriveTrainSubsystem;
 
 public class Turn extends CommandBase {
   DriveTrainSubsystem ds;
+  double sp;
   /** Creates a new DriveStraight. */
-  public Turn(RobotContainer robotContainer) {
+  public Turn(RobotContainer robotContainer, double setpoint) {
     ds = robotContainer.driveTrainSubsystem;
+    sp = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(robotContainer.driveTrainSubsystem);
   }
@@ -26,7 +28,7 @@ public class Turn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ds.turn(true);
+    ds.turnPID(sp, true);
   }
 
   // Called once the command ends or is interrupted.
@@ -38,11 +40,6 @@ public class Turn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (ds.getAngle() >= 45){
-      return true;
-    }
-    else{
-      return false;
-    }
+    return ds.getOffset() == 0;
   }
 }
